@@ -181,5 +181,46 @@ select * from Autor;
 select NomeLivro, PrecoLivro, ISBN13
 from Livro;
 
-select IdEditora
+select distinct IdEditora
 from Livro;
+
+-- Select into: criar uma tabela com dados de outras...
+/* 
+select coluna(s)
+into nova_tabela
+from tabela_atual 
+*/
+
+select NomeLivro, ISBN13
+into LivroISBN
+from Livro;
+
+select * from LivroISBN;
+
+drop table LivroISBN;
+
+select NomeLivro, PrecoLivro, DataPub
+from Livro;
+
+select SobrenomeAutor
+from Autor;
+
+select NomeAssunto
+from Assunto;
+
+select NomeEditora, IdEditora
+from Editora;
+
+select distinct IdAssunto
+from Livro;
+
+select *
+into LivrosFiccao
+from Livro
+where IdAssunto = 1;
+
+select * from LivrosFiccao;
+drop table LivrosFiccao;
+
+-- Ordenação de Resultados em Consultas SQL:
+-- Cláusulas ORDER BY....
