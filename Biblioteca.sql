@@ -224,3 +224,92 @@ drop table LivrosFiccao;
 
 -- Ordenação de Resultados em Consultas SQL:
 -- Cláusulas ORDER BY....
+
+/* Sintaxe...
+select coluna
+from tabela 
+order by coluna_a_ordenar [ASC | DESC]
+*/
+
+-- Exemplos
+select * from Livro
+order by NomeLivro;
+
+select NomeLivro, IdEditora
+from Livro
+order by IdEditora;
+
+select NomeLivro, PrecoLivro
+from Livro
+order by PrecoLivro desc;
+
+select NomeLivro, PrecoLivro
+from Livro
+order by PrecoLivro asc, IdEditora desc;
+
+-- Restrição de Resultados: select top...
+/*  Sintaxe:
+select top (número | PERTENC) colunas 
+from tabelas
+order by
+*/
+
+-- Exemplos
+select top (2) NomeLivro
+from Livro;
+-- order by NomeLivro;
+select * from Livro;
+
+-- Exemplo Percentual...
+select top (15) percent NomeLivro
+from Livro
+order by NomeLivro;
+
+select top (3) NomeLivro
+from Livro
+order by NomeLivro desc;
+
+select top (4) NomeLivro, PrecoLivro
+from Livro
+order by PrecoLivro desc;
+
+-- sem whith ties - Ver sem os IdAssuntos do livros que estão relacionados no banco de dados...
+select top (3) NomeLivro, IdLivro
+from Livro
+order by IdAssunto desc;
+
+-- com whith ties - Ver sem os IdAssuntos do livros que estão relacionados no banco de dados...
+select top (3) with ties NomeLivro, IdAssunto
+from Livro
+order by IdAssunto desc;
+
+-- Filtrar Resultados de Consultas com where...
+
+/* Sintaxe...
+select colunas
+from tabelas
+where coluna [operador] valor
+[order by]
+*/
+
+select NomeLivro, DataPub
+from Livro
+where IdEditora = 3;
+
+select IdAutor, NomeAutor
+from Autor
+where SobrenomeAutor = 'Vernes';
+
+select NomeLivro,PrecoLivro
+from Livro
+where PrecoLivro > 100.00
+order by PrecoLivro;
+
+select NomeLivro, DataPub
+from Livro
+where IdEditora = (
+	 select IdEditora
+	 from Editora
+	 where NomeEditora = 'Aleph'
+)
+order by NomeLivro;
