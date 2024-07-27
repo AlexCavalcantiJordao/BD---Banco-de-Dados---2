@@ -313,3 +313,74 @@ where IdEditora = (
 	 where NomeEditora = 'Aleph'
 )
 order by NomeLivro;
+
+-- Exclusão de Registros (linhas): DELETE FROM
+/* sintaxe 
+DELETE FROM tabela
+where coluna = valor...
+*/
+
+select  * from Assunto;
+
+delete from Assunto
+where NomeAssunto = 'Policial';
+
+insert into Assunto (NomeAssunto)
+values ('Policial');
+
+-- Truncate table: Limpa  uma tabela...
+
+/* Sintaxe: 
+truncate table nome_tabela;
+*/
+
+-- Criar tabela de teste...
+create table Teste(
+       IdTeste smallint primary key identity,
+	   ValorTeste smallint not null
+);
+
+-- Rotina para inserir dados na tabela...
+declare @Contador int = 1
+
+while @Contador <= 100
+begin
+	insert into Teste (ValorTeste) values (@Contador * 3)
+	set @Contador = @Contador + 1
+end
+
+select * from Teste;
+
+-- Limpa a tabela...
+truncate table Teste;
+
+-- Verificar o valor atual de identity...
+select IDENT_CURRENT ('Teste');
+
+-- Atualizar Registros: Clásulas UPDATE...
+/* Sintaxe 
+UPDATE tabela
+SET coluna = novo_valor
+WHERE coluna = filtros;
+*/
+select IdLivro, NomeLivro, PrecoLivro,NumeroPagina from Livro;
+
+update Livro
+set NomeLivro = 'Eu, Robô'
+where IdLivro = 116;
+
+update Livro
+set PrecoLivro = 60.00
+where IdLivro = 105;
+
+update Livro
+set PrecoLivro = PrecoLivro * 1.1
+where IdLivro = 105;
+
+update Livro
+set PrecoLivro = PrecoLivro * 0.8
+where IdLivro = 105;
+
+update Livro
+set PrecoLivro = 60.00, NumeroPagina = 320
+where IdLivro = 105;
