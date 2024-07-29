@@ -696,3 +696,38 @@ full join Editora E on L.IdEditora = E.IdEditora;
 select * from Livro cross join Assunto;
 
 -- views (Exibições)...
+-- Simplicar consultas complexas...
+-- Segurança...
+-- Abstração...
+-- Agregação e Sumarização de dados...
+
+/* 
+CREATE [OR ALTER] VIEW nomeView AS
+SELECT colunas
+FROM tabelas
+WHERE condições
+*/
+create or alter view vwLivroPreco as select top 5 NomeLivro, PrecoLivro
+from Livro
+order by PrecoLivro;
+
+select * from vwLivroPreco;
+exec sp_helptext vwLivroPreco;
+
+if OBJECT_ID('vwLivroAssunto', 'view') is not null drop view vwLivroAssunto;
+go
+
+create view vwLivroAssunto as
+select L.NomeLivro Livro, A.NomeAssunto Assunto from Livro L 
+inner join Assunto A on L.IdAssunto = A.IdAssunto;
+go
+
+select Livro, Assunto from vwLivroAssunto;
+
+alter view vwLivroAssunto as 
+select L.NomeLivro Livro, A.NomeAssunto Assunto, L.ISBN13
+from Livro L inner join Assunto A on L.IdAssunto = A.IdAssunto;
+
+select * from vwLivroAssunto;
+
+drop view vwLivroPreco;
