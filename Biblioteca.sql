@@ -384,3 +384,205 @@ where IdLivro = 105;
 update Livro
 set PrecoLivro = 60.00, NumeroPagina = 320
 where IdLivro = 105;
+
+-- Nomes Alternativos: AS (ALIAS)
+/* Sintaxe
+SELECT colunas1 [AS] nome_alternativos1
+FROM tabela [AS] nome_alternativos_tabela
+*/
+
+select NomeLivro as Livros
+from Livro;
+
+select A.NomeAutor as Nome, A.SobrenomeAutor as Sobrenome
+from Autor as A;
+
+select top (3) NomeLivro as 'Livros mais caros', PrecoLivro as 'Preco do Livro'
+from Livro as L
+order by 'Preco do Livro' desc;
+
+-- Filtros Combinados: Operadores Lógicos AND, OR, NOT
+
+/* Sintaxe: 
+- AND
+- OR
+- NOT
+*/
+
+select * from Livro
+where IdLivro > 102 and IdEditora < 4;
+
+select * from Livro
+where IdLivro > 102 and IdLivro < 108;
+
+select * from Livro
+where IdLivro > 110 or IdEditora < 4;
+
+select * from Livro
+where IdLivro > 110 or not IdEditora < 4;
+
+-- BETWEEN: Seleção de Intervalo...
+/* 
+Sintaxe: SELECT colunas FROM tabela WHERE coluna BETWEEN valor1 AND valor2... 
+*/
+
+select * from Livro
+where DataPub between '20040507' and '20140507';
+
+select NomeLivro Livro, PrecoLivro Preco
+from Livro
+where PrecoLivro between 50.00 and 100.00;
+
+select NomeLivro, DataPub, PrecoLivro
+from Livro
+where PrecoLivro >= 20.00
+and DataPub between '20050620' and '20100620'
+or DataPub between '20160101' and '20200101'
+order by DataPub desc;
+
+/* 
+Combinação Consultas com o operador UNION 
+
+Sintaxe: 
+SELECT colunas FROM tabela1 
+UNION 
+SELECT coluna FROM tabela2...
+*/
+
+-- Exemplos 01...
+select NomeAutor Nome, 'Autor' as Tipo from Autor
+union
+select NomeEditora Nome, 'Editora' as Tipo from Editora;
+
+-- Exemplos 02...
+select NomeLivro as Nome, 'Livro' as Tipo from Livro
+union
+select NomeAssunto as Nome, 'Assunto' as Tipos from Assunto;
+
+-- Exemplo 03...
+select NomeAutor as Nome, 'Autor' as Tipo from Autor
+union
+select NomeEditora as Nome, 'Editora' as Tipo from Editora
+union
+select NomeAssunto as Nome, 'Assunto' as Tipo from Assunto
+union
+select NomeLivro as Nome,  'Livro' as Tipo from Livro;
+
+----------------------------------------------------------------------------------------------
+
+-- Funções de Agregação...
+/*
+MIN, MAX, AVG. SUM, COUNT
+*/
+select count(*) Total
+from Autor;
+
+select max(PrecoLivro) 'Mais caro'
+from Livro;
+
+select min(NumeroPagina)
+from Livro;
+
+select avg(PrecoLivro) 'Preço médio'
+from Livro;
+
+select sum(PrecoLivro) 'Valor total'
+from Livro;
+
+select count(*) Total
+from Livro;
+
+select count(*) Total
+from Livro
+where IdAssunto = 1;
+
+select sum(PrecoLivro) / count(*) as 'Preço médio'
+from Livro;
+
+select NomeLivro, PrecoLivro
+from Livro
+where PrecoLivro = (
+    select max(PrecoLivro)
+	from Livro
+);
+
+------------------------------------------------------------------------------------------------------------
+
+-- Clásula LIKE (e NOT LIKE)
+
+/*
+Sintaxe:
+SELECT colunas
+FROM tabela
+WHERE coluna LIKE padrão;
+*/
+
+/* 
+Metacaracteres:
+
+% - Qualquer cadeia de 0 - (zero) ou mais caracteres...
+
+_ - Qualquer caracter único...
+
+[] -  Caracteres únicos no intervalos ou comjuntos especificados...
+
+[^] - Caracteres únicos NÃO no intervalos ou conjuntos especificados...
+*/
+
+select * from Livro
+where NomeLivro LIKE 'F%';
+
+select NomeAutor
+from Autor
+where NomeAutor not like 'S%';
+
+select * from Livro
+where NomeLivro LIKE '[FD]%';
+
+select * from Livro
+where NomeLivro LIKE '[^F^D]%';
+
+select * from Livro
+where NomeLivro LIKE '%[aeiou]';
+
+select * from Livro
+where NomeLivro LIKE '[aeiou]%';
+
+select * from Livro
+where NomeLivro LIKE '[0-9]%';
+
+select * from Livro
+where NomeLivro LIKE 'A%O';
+
+select NomeAutor, SobrenomeAutor
+from Autor
+where NomeAutor like 'R%' and SobrenomeAutor like 'B%';
+
+select * from Livro
+where NomeLivro LIKE '%[aeiou]_';
+
+select NomeEditora
+from Editora
+where NomeEditora like '[o-t]%';
+
+select NomeAutor, SobrenomeAutor
+from Autor
+where NomeAutor like 'J___';
+
+select * from Livro
+where NomeLivro NOT LIKE '[aeiou0-9]%';
+
+/* 
+BACKUP e RESTAURAÇÃO de banco de dados...
+
+Sintaxe:
+BACKUP DATABASE nome_banco
+TO DISK = 'X:\CAMINHO\nome_banco.bak'
+[WITH FORMAT];
+GO
+
+RESTORE DATABASE nome_banco
+FROM DISK = 'X:\CAMINHO\nome_banco.bak'
+[WITH RESPLACE];
+GO
+*/
