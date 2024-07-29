@@ -586,3 +586,44 @@ FROM DISK = 'X:\CAMINHO\nome_banco.bak'
 [WITH RESPLACE];
 GO
 */
+
+BACKUP DATABASE Biblioteca
+to disk = 'C:\SQL\Biblioteca.bak';
+go
+
+USE master;
+go
+alter database Biblioteca
+set single_user with rollback immediate;
+go
+drop database Biblioteca;
+
+restore database Biblioteca
+from disk = 'C:\SQL\Biblioteca.bak';
+go
+
+use Biblioteca
+go
+select * from Livro;
+
+-- JOINS: INNER JOIN
+select NomeLivro, NomeAssunto from Livro
+inner join Assunto
+on Livro.IdAssunto = Assunto.IdAssunto;
+
+select L.NomeLivro as Livros, E.NomeEditora Editoras
+from Livro L
+inner join Editora E
+on L.IdEditora = E.IdEditora
+where E.NomeEditora like '[MH]%'
+order by L.NomeLivro;
+
+select L.NomeLivro Livro, A.NomeAutor Autor, A.SobrenomeAutor Sobrenome, E.NomeEditora Editora
+from LivroAutor LA
+inner join Autor A
+on LA.IdAutor = A.IdAutor
+inner join Livro L
+on L.IdLivro = LA.IdLivro
+join Editora E
+on L.IdEditora = E.IdEditora
+order by Livro;
