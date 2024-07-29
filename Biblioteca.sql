@@ -627,3 +627,72 @@ on L.IdLivro = LA.IdLivro
 join Editora E
 on L.IdEditora = E.IdEditora
 order by Livro;
+
+-- EXERCICIOS SQL INNER JOIN....
+
+-- Exercicio 01: Escreva uma consulta que retorne os nomes dos livros e suas respectivos assuntos...
+select L.NomeLivro Livro, A.IdAssunto Assunto
+from Livro L
+inner join Assunto A
+on L.IdAssunto = A.IdAssunto;
+
+-- Exercicio 02: Precisamos descobrir os nomes e sobrenomes dos autores, livros escritos por eles e os assuntos dos livros...
+select AU.NomeAutor 'Nome do Autor', AU.SobrenomeAutor 'Sobrenome do Autor', L.NomeLivro Livro, A.NomeAssunto Assunto
+from Autor AU
+inner join LivroAutor LA on AU.IdAutor = LA.IdAutor
+inner join Livro L on LA.IdLivro = L.IdLivro
+inner join Assunto A on L.IdAssunto = A.IdAssunto;
+
+
+-- Exercicio 03: Escreva uma consultas que retorne os nomes dos livros, seus preços, a editora e o assunto, em ordem alfabéticos de nomes de livros...
+select L.NomeLivro Livro, L.PrecoLivro Preco, E.NomeEditora Editora, A.NomeAssunto Assunto
+from Livro L
+inner join Editora E on L.IdEditora = E.IdEditora
+inner join Assunto A on A.IdAssunto = A.IdAssunto
+order by L.NomeLivro;
+
+-- Exercicio 04: Retorne os nomes de livros e datas de publicação dos livros cujos sobrenomes do autor se inicia com a letra B...
+select L.NomeLivro Livro, L.dataPub 'Data de publicação', AU.SobrenomeAutor
+from Livro L
+inner join LivroAutor LA on L.IdLivro = LA.IdLivro
+inner join Autor AU on LA.IdAutor = AU.IdAutor
+where Au.SobrenomeAutor like 'B%';
+
+-- Exercicio 05: Retorna os assuntos e sobrenome de autores de livros que custam mais do que R$ 80,00...
+select A.NomeAssunto, AU.SobrenomeAutor, L.PrecoLivro
+from Livro L
+inner join LivroAutor LA on L.IdLivro = LA.IdAutor
+inner join Autor AU on LA.IdAutor = AU.IdAutor
+inner join Assunto A on L.IdAssunto = A.IdAssunto
+where L.PrecoLivro > 80.00;
+
+select PrecoLivro from Livro;
+
+-- Exercicio 06: Consultar preços, assuntos e nomes dos livros que custam entre R$ 70,00 e R$ 170,00, ordenando dos mais caro para o mais barato...
+select L.PrecoLivro Preco, L.NomeLivro Livro, A.NomeAssunto Assunto
+from Livro L
+inner join Assunto A on L.IdAssunto = A.IdAssunto
+where L.PrecoLivro between 20.00 and 170.00
+order by L.PrecoLivro desc;
+
+-- OUTHER JOIN...
+select * from Editora E
+left join Livro L on L.IdEditora = E.IdEditora;
+
+select * from Livro L
+left join Editora E on L.IdEditora = E.IdEditora;
+
+-- RIGHT JOIN...
+select * from Editora E
+right join Livro L on L.IdEditora = E.IdEditora;
+
+select * from Livro L
+right join Editora E on L.IdEditora = E.IdEditora;
+
+-- FULL JOIN...
+select * from Livro L
+full join Editora E on L.IdEditora = E.IdEditora;
+
+select * from Livro cross join Assunto;
+
+-- views (Exibições)...
